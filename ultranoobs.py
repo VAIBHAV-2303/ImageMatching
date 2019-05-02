@@ -3,18 +3,31 @@ import glob
 import numpy as np
 import math
 from scipy import ndimage
+import sys
+import os
+
+file_obj = open("20171101_20171005_20171108.txt","w")
 
 def rgb2gray(rgb):
     return np.dot(rgb[...,:3], [0.2989, 0.5870, 0.1140])
 
-framespath = glob.glob("./Test/frames/*.jpg")
-slidespath = glob.glob("./Test/slides/*.jpg")
+framespath = os.listdir(sys.argv[2])
+slidespath = os.listdir(sys.argv[1])
+
+for frames in range(len(framespath)):
+	framespath[frames] = os.path.join(sys.argv[2],framespath[frames])
+
+for slides in range(len(slidespath)):
+	slidespath[slides] = os.path.join(sys.argv[1],slidespath[slides])
+
+
 framespath.sort()
 slidespath.sort()
 
 slides = []
 
 # Converting to rgb, applying sobel and then normalizing
+
 for i in slidespath:
 	im = mpimg.imread(i)
 	gray = rgb2gray(im)
@@ -51,14 +64,6 @@ for i in range(len(framespath)):
 		except:
 			pass
 
-	
-	print(framespath[i].split('/')[3], slidespath[ans].split('/')[3])
-	if (framespath[i].split('/')[3].split('_')[0] + '_' + framespath[i].split('/')[3].split('_')[1]) == slidespath[ans].split('/')[3].split('.')[0]:
-		correct += 1
-	else:
-		incorrect += 1
+	file_obj.write(framespath[i].split('/')[3] + " " + slidespath[ans].split('/')[3] + "\n")
 
-print('=================================================')
-print('Correct: ', correct, 'Incorrect: ', incorrect)
-print('Accuracy: ', 100*correct/(correct+incorrect))
-print('=================================================')
+file_obj.close()
