@@ -63,7 +63,6 @@ for i in range(len(framespath)):
 				ans = j
 		except:
 			pass
-
-	file_obj.write(framespath[i].split('/')[3] + " " + slidespath[ans].split('/')[3] + "\n")
+	file_obj.write(framespath[i].split('/')[len(framespath[i].split('/'))-1] + " " + slidespath[ans].split('/')[len(slidespath[ans].split('/'))-1] + "\n")
 
 file_obj.close()
